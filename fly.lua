@@ -44,9 +44,19 @@ BG.CFrame = Root.CFrame
 BG.Parent = Root
 _G.FlyBG = BG
 
-local function getDirection()
-	local moveDir = Vector3.zero
+_G.FlyConnection = RunService.Heartbeat:Connect(function()
+	if not Char or not Char.Parent or not Root or not Root.Parent then
+		if _G.FlyConnection then
+			_G.FlyConnection:Disconnect()
+			_G.FlyConnection = nil
+		end
+		return
+	end
+	
 	local camCF = workspace.CurrentCamera.CFrame
+	BG.CFrame = camCF
+	
+	local moveDir = Vector3.zero
 	
 	if UserInputService:IsKeyDown(Enum.KeyCode.W) then
 		moveDir = moveDir + camCF.LookVector
@@ -67,19 +77,9 @@ local function getDirection()
 		moveDir = moveDir - Vector3.new(0, 1, 0)
 	end
 	
-	return moveDir.Magnitude > 0 and moveDir.Unit or Vector3.zero
-end
-
-_G.FlyConnection = RunService.Heartbeat:Connect(function()
-	if not Char or not Char.Parent or not Root or not Root.Parent then
-		if _G.FlyConnection then
-			_G.FlyConnection:Disconnect()
-			_G.FlyConnection = nil
-		end
-		return
+	if moveDir.Magnitude > 0 then
+		BV.Velocity = moveDir.Unit * Speed
+	else
+		BV.Velocity = Vector3.zero
 	end
-	
-	BG.CFrame = workspace.CurrentCamera.CFrame
-	local dir = getDirection()
-	BV.Velocity = dir * Speed
 end)
