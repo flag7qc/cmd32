@@ -20,6 +20,7 @@ cmdbar_TextBox.ClearTextOnFocus = true
 cmdbar_TextBox.Parent = cmd32_ScreenGui
 
 local Commands = {
+	["help"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/help.lua",
     ["fly"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/fly.lua",
     ["unfly"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/fly.lua"
 }
