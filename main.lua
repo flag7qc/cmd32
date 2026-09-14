@@ -1,5 +1,6 @@
 local cmd32_ScreenGui = Instance.new("ScreenGui")
 cmd32_ScreenGui.Name = "cmd32"
+cmd32_ScreenGui.ResetOnSpawn = false
 cmd32_ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 	
 local cmdbar_TextBox = Instance.new("TextBox")
@@ -15,4 +16,41 @@ cmdbar_TextBox.Visible = true
 cmdbar_TextBox.BackgroundTransparency = 0
 cmdbar_TextBox.BorderSizePixel = 0
 cmdbar_TextBox.BorderColor3 = Color3.new(0, 0, 0)
+cmdbar_TextBox.ClearTextOnFocus = true
 cmdbar_TextBox.Parent = cmd32_ScreenGui
+
+local Commands = {
+    ["info"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/info.lua",
+}
+
+cmdbar_TextBox.FocusLost:Connect(function(enterPressed)
+    if not enterPressed then return end
+    
+    local text = cmdbar_TextBox.Text
+    cmdbar_TextBox.Text = ""
+    
+    local args = string.split(text, " ")
+    local commandName = string.lower(table.remove(args, 1))
+    
+    local targetUrl = Commands[commandName]
+    
+    if targetUrl then
+        task.spawn(function()
+            local success, scriptContent = pcall(function()
+                return game:HttpGet(targetUrl)
+            end)
+            
+            if success and scriptContent then
+                local runSuccess, runError = pcall(function()
+                    local exec = loadstring(scriptContent)
+                    if exec then
+                        exec(commandName, args)
+                    end
+                end)
+                if not runSuccess then
+                    warn(runError)
+                end
+            end
+        end)
+    end
+end)
