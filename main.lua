@@ -23,6 +23,8 @@ local Commands = {
     ["info"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/info.lua",
     ["fly"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/fly.lua",
     ["unfly"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/fly.lua"
+	["walkspeed"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/speed.lua"
+	["ws"] = "https://raw.githubusercontent.com/flag7qc/cmd32/refs/heads/main/speed.lua"
 }
 
 cmdbar_TextBox.FocusLost:Connect(function(enterPressed)
